@@ -92,7 +92,7 @@ uint64_t lfdi_gen (uint8_t *lfdi, const char *path) {
   if (!f) { printf ("error opening file %s\n", path); exit (0); }
   fseek (f, 0, SEEK_END); length = ftell (f); fseek (f, 0, SEEK_SET);
   buffer = malloc (sha256_size (length));
-  fread (buffer, length, 1, f); fclose (f);
+  size_t bytes = fread (buffer, length, 1, f); fclose (f);
   sfdi = lfdi_hash (lfdi, buffer, length);
   free (buffer); return sfdi;
 }
@@ -105,7 +105,7 @@ uint64_t load_device_cert (uint8_t *lfdi, const char *path) {
   return sfdi;
 }
 
-// generate lfdi/sfdi from device certificate 
+// generate lfdi/sfdi from device certificate
 void security_init (const char *path) {
   device_sfdi = load_device_cert (device_lfdi, path);
 }

@@ -58,8 +58,8 @@ int event_poll (void **any, int timeout) {
       return TCP_ACCEPT;
     } goto poll;
   case TIMER_EVENT:
-    read (pe->fd, &value, 8);
-    if (pe->id == TCP_TIMEOUT)
+      size_t bytes = read (pe->fd, &value, 8);
+      if (pe->id == TCP_TIMEOUT)
       *any = tcp_expired ();
     return pe->id;
   }
